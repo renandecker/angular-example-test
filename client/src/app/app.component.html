@@ -1,0 +1,81 @@
+<div class="container">
+  <header class="header">
+    <h1>🚀 Gerenciador Full-Stack</h1>
+    <p>Angular (Frontend) + Node.js / Express (Backend API)</p>
+  </header>
+
+  <main class="main-content">
+    <!-- Erro / Alerta -->
+    <div *ngIf="errorMessage" class="alert error">
+      {{ errorMessage }}
+      <button (click)="loadItems()" class="retry-btn">Tentar Novamente</button>
+    </div>
+
+    <!-- Formulário de Criação -->
+    <section class="card form-card">
+      <h2>Novo Item / Tarefa</h2>
+      <form (submit)="addItem($event)">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input 
+            type="text" 
+            id="title" 
+            [(ngModel)]="newTitle" 
+            name="title" 
+            placeholder="Ex: Estudar Angular e Node.js" 
+            required 
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição</label>
+          <textarea 
+            id="description" 
+            [(ngModel)]="newDescription" 
+            name="description" 
+            placeholder="Detalhes opcionais..."
+            rows="2"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn primary-btn">Adicionar Item</button>
+      </form>
+    </section>
+
+    <!-- Lista de Itens -->
+    <section class="card list-card">
+      <div class="list-header">
+        <h2>Itens Cadastrados na API</h2>
+        <span class="badge">{{ items.length }} iten(s)</span>
+      </div>
+
+      <div *ngIf="loading" class="loading">Carregando dados da API...</div>
+
+      <div *ngIf="!loading && items.length === 0" class="empty-state">
+        Nenhum item cadastrado ainda. Adicione o primeiro acima!
+      </div>
+
+      <ul class="items-list" *ngIf="!loading && items.length > 0">
+        <li *ngFor="let item of items" [class.completed]="item.completed" class="item-row">
+          <div class="item-info">
+            <input 
+              type="checkbox" 
+              [checked]="item.completed" 
+              (change)="toggleComplete(item)" 
+              title="Marcar como concluído"
+            />
+            <div class="item-text">
+              <h3>{{ item.title }}</h3>
+              <p *ngIf="item.description">{{ item.description }}</p>
+            </div>
+          </div>
+          <button (click)="deleteItem(item.id)" class="btn delete-btn" title="Excluir">🗑️ Excluir</button>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Projeto Full-stack Angular & Node.js Express — Pronto para uso.</p>
+  </footer>
+</div>
